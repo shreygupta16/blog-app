@@ -1,0 +1,29 @@
+services:
+  nginx:
+    ports:
+      - "3000:80"
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  node-app:
+    build: .
+    environment:
+      - PORT=3000
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=creeper
+      - MONGO_INITDB_ROOT_PASSWORD=fullstackapp
+    volumes:
+      - mongo-db:/data/db
+  
+  redis:
+    image: redis
+    
+  
+volumes:
+  mongo-db:
