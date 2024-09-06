@@ -89,15 +89,50 @@ exports.deletePost = async (req, res, next) => {
 
 
 /* ADD LIKE FINCTIONALITY */
-// exports.likePost = async (req, res, next) => {
-//     try{
-//         const post = await Post.findById(req.params.id);
-//         const likes = post.likes;
+exports.likePost = async (req, res, next) => {
+    try{
+        const post = await Post.findById(req.params.id);
+        post.likes += 1;
 
-//     }
-//     catch(err){
-//         res.status(400).json({
-//             status: "fail",
-//         });
-//     }
-// };
+        const postNew = await Post.findByIdAndUpdate(req.params.id, post, {
+            new: true,
+            runValidators: true,
+        });
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                postNew,
+            },
+        });
+    }
+    catch(err){
+        res.status(400).json({
+            status: "fail",
+        });
+    }
+};
+
+exports.dislikePost = async (req, res, next) => {
+    try{
+        const post = await Post.findById(req.params.id);
+        post.likes -= 1;
+
+        const postNew = await Post.findByIdAndUpdate(req.params.id, post, {
+            new: true,
+            runValidators: true,
+        });
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                postNew,
+            },
+        });
+    }
+    catch(err){
+        res.status(400).json({
+            status: "fail",
+        });
+    }
+};

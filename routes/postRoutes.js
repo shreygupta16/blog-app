@@ -10,4 +10,7 @@ router.route("/").get(postController.getAllPosts).post(protect, postController.c
 
 router.route("/:id").get(postController.getOnePost).patch(protect, postController.updatePost).delete(protect, postController.deletePost);
 
+router.route("/like/:id").get(protect, postController.likePost);
+router.route("/dislike/:id").get(protect, postController.dislikePost);
+
 module.exports = router;
